@@ -13,9 +13,10 @@
 技術スタック自体の制約は `CLAUDE.md` 2章「技術スタック（厳守）」を参照。実装作業中に守ること：
 
 - 仮想環境は `venv/`（プロジェクト直下）を使う。
-  - 作成: `python -m venv venv`
-  - 有効化（Windows / PowerShell）: `.\venv\Scripts\activate`
-- `pip install` を行ったら必ず `requirements.txt` を更新する。
+  - **venv はアクティベートしない**。venv 内の実行ファイルを `venv\Scripts\<コマンド名>` の形式でフルパス指定して呼び出す（詳細は `AGENTS.md` 2.1 参照）。
+  - `venv\Scripts\activate` / `Activate.ps1` / `deactivate` は使用しない（PowerShell の実行ポリシーで失敗、cmd でも親プロセスに反映されないため）。
+  - 列挙にないコマンドは `venv\Scripts\python -m <モジュール名>` 形式で実行する。
+- `pip install` を行ったら必ず `requirements.txt` を更新する（実行は `venv\Scripts\pip install <パッケージ名>` → `venv\Scripts\pip freeze > requirements.txt`）。
 - バックエンドの起動コマンド・フロントエンドの開き方は、実装後に `README.md` 末尾へ追記してよい。
 
 ## コメント・命名
