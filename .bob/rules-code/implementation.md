@@ -14,7 +14,6 @@
 
 - 仮想環境は `venv/`（プロジェクト直下）を使う。venv の使い方の詳細は下記「コマンド実行時のvenv使用規則」を参照。
 - `pip install` を行ったら必ず `requirements.txt` を更新する（実行は `venv\Scripts\pip install <パッケージ名>` → `venv\Scripts\pip freeze > requirements.txt`）。
-- バックエンドの起動コマンド・フロントエンドの開き方は、実装後に `README.md` 末尾へ追記してよい。
 
 ## コマンド実行時のvenv使用規則
 
