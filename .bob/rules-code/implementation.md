@@ -12,12 +12,33 @@
 
 技術スタック自体の制約は `AGENTS.md` 2章「技術スタック（厳守）」を参照。実装作業中に守ること：
 
-- 仮想環境は `venv/`（プロジェクト直下）を使う。
-  - **venv はアクティベートしない**。venv 内の実行ファイルを `venv\Scripts\<コマンド名>` の形式でフルパス指定して呼び出す（詳細は `AGENTS.md` 2.1 参照）。
-  - `venv\Scripts\activate` / `Activate.ps1` / `deactivate` は使用しない（PowerShell の実行ポリシーで失敗、cmd でも親プロセスに反映されないため）。
-  - 列挙にないコマンドは `venv\Scripts\python -m <モジュール名>` 形式で実行する。
+- 仮想環境は `venv/`（プロジェクト直下）を使う。venv の使い方の詳細は下記「コマンド実行時のvenv使用規則」を参照。
 - `pip install` を行ったら必ず `requirements.txt` を更新する（実行は `venv\Scripts\pip install <パッケージ名>` → `venv\Scripts\pip freeze > requirements.txt`）。
 - バックエンドの起動コマンド・フロントエンドの開き方は、実装後に `README.md` 末尾へ追記してよい。
+
+## コマンド実行時のvenv使用規則
+
+シェルコマンドは実行のたびに別プロセスとして起動するため、`activate` の状態は引き継がれない。
+また、PowerShell の実行ポリシー（Restricted 等）により `.ps1` スクリプトはブロックされる場合がある。
+そのため、本プロジェクトでは **venv をアクティベートせず、venv 内の実行ファイルをフルパスで直接呼び出す** こと。
+
+### 原則
+
+- venv 配下のコマンドは必ず `venv\Scripts\<コマンド名>` の形式で実行する（`.exe` を直接呼び出す扱いになり、PowerShell の実行ポリシーの影響を受けない）。
+- `python` / `pip` / `pytest` 等を **単体で実行してはならない**(グローバル環境が使われるため)。
+- `venv\Scripts\activate` / `venv\Scripts\Activate.ps1` / `deactivate` は **使用しない**(PowerShell では実行ポリシーで失敗、cmd でも親プロセスに反映されない)。
+- 列挙にないコマンドを使うときは、原則として `venv\Scripts\python -m <モジュール名>` の形式で実行する(最も汎用的で安全)。
+
+### よく使うコマンド
+
+| やること | 使うコマンド |
+| --- | --- |
+| Flaskサーバ起動 | `venv\Scripts\python app.py` |
+| パッケージインストール | `venv\Scripts\pip install <パッケージ名>` |
+| パッケージ一覧出力 | `venv\Scripts\pip freeze` |
+| requirements.txt から一括導入 | `venv\Scripts\pip install -r requirements.txt` |
+| テスト実行（pytest） | `venv\Scripts\pytest` |
+| モジュールとして実行（汎用） | `venv\Scripts\python -m <モジュール名>` |
 
 ## コメント・命名
 
