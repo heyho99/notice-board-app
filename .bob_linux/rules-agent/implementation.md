@@ -11,7 +11,7 @@
 ## 実装時の作業ルール
 
 - 仮想環境は `venv/`（プロジェクト直下）を使う。venv の使い方の詳細は下記「コマンド実行時のvenv使用規則」を参照。
-- `pip install` を行ったら必ず `requirements.txt` を更新する（実行は `venv\Scripts\pip install <パッケージ名>` → `venv\Scripts\pip freeze > requirements.txt`）。
+- `pip install` を行ったら必ず `requirements.txt` を更新する（実行は `venv/bin/pip install <パッケージ名>` → `venv/bin/pip freeze > requirements.txt`）。
 
 ## コマンド実行時のvenv使用規則
 
@@ -21,31 +21,30 @@ Python 関連のコマンドを実行する前、または `pip install` 等を�
 
 - `venv/` が **すでに存在する場合**: 絶対に `python -m venv venv` 等で作り直してはならない。既存の venv をそのまま使う。
 - `venv/` が **存在しない場合のみ**、学習者に「venv を新規作成してよいか」を確認したうえで作成する。AI が独断で作成してはならない。
-- 「activate できない」「python が見つからない」等のエラーが出ても、venv を作り直すことで解決しようとしない。必ず `venv\Scripts\python` のフルパス指定で対処する。
+- 「activate できない」「python が見つからない」等のエラーが出ても、venv を作り直すことで解決しようとしない。必ず `venv/bin/python` のフルパス指定で対処する。
 
 ### アクティベートしない方針
 
 シェルコマンドは実行のたびに別プロセスとして起動するため、`activate` の状態は引き継がれない。
-また、PowerShell の実行ポリシー（Restricted 等）により `.ps1` スクリプトはブロックされる場合がある。
 そのため、本プロジェクトでは **venv をアクティベートせず、venv 内の実行ファイルをフルパスで直接呼び出す** こと。
 
 ### 原則
 
-- venv 配下のコマンドは必ず `venv\Scripts\<コマンド名>` の形式で実行する（`.exe` を直接呼び出す扱いになり、PowerShell の実行ポリシーの影響を受けない）。
+- venv 配下のコマンドは必ず `venv/bin/<コマンド名>` の形式で実行する。
 - `python` / `pip` / `pytest` 等を **単体で実行してはならない**(グローバル環境が使われるため)。
-- `venv\Scripts\activate` / `venv\Scripts\Activate.ps1` / `deactivate` は **使用しない**(PowerShell では実行ポリシーで失敗、cmd でも親プロセスに反映されない)。
-- 列挙にないコマンドを使うときは、原則として `venv\Scripts\python -m <モジュール名>` の形式で実行する(最も汎用的で安全)。
+- `source venv/bin/activate` / `deactivate` は **使用しない**(シェルコマンドのたびに別プロセスが起動するため、親プロセスの環境に反映されない)。
+- 列挙にないコマンドを使うときは、原則として `venv/bin/python -m <モジュール名>` の形式で実行する(最も汎用的で安全)。
 
 ### よく使うコマンド
 
 | やること | 使うコマンド |
 | --- | --- |
-| Flaskサーバ起動 | `venv\Scripts\python app.py` |
-| パッケージインストール | `venv\Scripts\pip install <パッケージ名>` |
-| パッケージ一覧出力 | `venv\Scripts\pip freeze` |
-| requirements.txt から一括導入 | `venv\Scripts\pip install -r requirements.txt` |
-| テスト実行（pytest） | `venv\Scripts\pytest` |
-| モジュールとして実行（汎用） | `venv\Scripts\python -m <モジュール名>` |
+| Flaskサーバ起動 | `venv/bin/python app.py` |
+| パッケージインストール | `venv/bin/pip install <パッケージ名>` |
+| パッケージ一覧出力 | `venv/bin/pip freeze` |
+| requirements.txt から一括導入 | `venv/bin/pip install -r requirements.txt` |
+| テスト実行（pytest） | `venv/bin/pytest` |
+| モジュールとして実行（汎用） | `venv/bin/python -m <モジュール名>` |
 
 ## コメント・命名
 
